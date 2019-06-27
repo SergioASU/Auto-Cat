@@ -1,15 +1,16 @@
-import smtplib, ssl
+from Email import *
+import time
+import schedule
 
 def main():
-    print("Auto-Cat starting up")
-    port = 465  # For SSL
-    password = 'AutoCatProject'
-
-    # Create a secure SSL context
-    context = ssl.create_default_context()
-
-    with smtplib.SMTP_SSL("smtp.gmail.com", port, context=context) as server:
-        server.login("Auto.Cat.Messaging@gmail.com", password)
-        server.sendmail('Auto.Cat.Messaging@gmail.com', 'sergio.c.842@gmail.com', 'test')
-        server.quit() 
+    print("Auto-Cat initializing")
+    email = Email(465,'Auto.Cat.Messaging@gmail.com','AutoCatProject')
+    schedule.every(1).minutes.do(email.sendEmail,'sergio.c.842@gmail.com','This is a test')
+    print("Auto-Cat initializing complete")
+    
+    while True:
+        print('Auto-Cat running')
+        schedule.run_pending()
+        time.sleep(1)
+    
 main()
